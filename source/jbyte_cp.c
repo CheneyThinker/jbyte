@@ -32,29 +32,9 @@ void generator_constant_pool(FILE* pWriteFile) {
   addConstantMethodref(0x0015, 0x0019, pWriteFile);
 }
 
-void addConstantUtf8(u1* utf8_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_UTF8_TAG)
-  u2 utf8_length = (u2) strlen(utf8_value);
-  PUT_U2(length, utf8_length)
-  for (u2 utf8_length_index = 0; utf8_length_index < utf8_length; utf8_length_index++) {
-    PUT_U1(bytes, utf8_value[utf8_length_index])
-  }
-}
-
 void addConstantClass(u2 name_index_value, FILE* pWriteFile) {
   PUT_U1(tag, CONSTANT_CLASS_TAG)
   PUT_U2(name_index, name_index_value)
-}
-
-void addConstantString(u2 string_index_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_STRING_TAG)
-  PUT_U2(string_index, string_index_value)
-}
-
-void addConstantNameAndType(u2 name_index_value, u2 descriptor_index_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_NAME_AND_TYPE_TAG)
-  PUT_U2(name_index, name_index_value)
-  PUT_U2(descriptor_index, descriptor_index_value)
 }
 
 void addConstantFieldref(u2 class_index_value, u2 name_and_type_index_value, FILE* pWriteFile) {
@@ -67,6 +47,87 @@ void addConstantMethodref(u2 class_index_value, u2 name_and_type_index_value, FI
   PUT_U1(tag, CONSTANT_METHODREF_TAG)
   PUT_U2(class_index, class_index_value)
   PUT_U2(name_and_type_index, name_and_type_index_value)
+}
+
+void addConstantInterfaceMethodref(u2 class_index_value, u2 name_and_type_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_METHODREF_TAG)
+  PUT_U2(class_index, class_index_value)
+  PUT_U2(name_and_type_index, name_and_type_index_value)
+}
+
+void addConstantString(u2 string_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_STRING_TAG)
+  PUT_U2(string_index, string_index_value)
+}
+
+void addConstantInteger(u4 bytes_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_INTEGER_TAG)
+  PUT_U4(bytes, bytes_value)
+}
+
+void addConstantFloat(u4 bytes_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_FLOAT_TAG)
+  PUT_U4(bytes, bytes_value)
+}
+
+void addConstantLong(u4 high_bytes_value, u4 low_bytes_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_LONG_TAG)
+  PUT_U4(high_bytes, high_bytes_value)
+  PUT_U4(low_bytes, low_bytes_value)
+}
+
+void addConstantDouble(u4 high_bytes_value, u4 low_bytes_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_DOUBLE_TAG)
+  PUT_U4(high_bytes, high_bytes_value)
+  PUT_U4(low_bytes, low_bytes_value)
+}
+
+void addConstantNameAndType(u2 name_index_value, u2 descriptor_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_NAME_AND_TYPE_TAG)
+  PUT_U2(name_index, name_index_value)
+  PUT_U2(descriptor_index, descriptor_index_value)
+}
+
+void addConstantUtf8(u1* utf8_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_UTF8_TAG)
+  u2 utf8_length = (u2) strlen(utf8_value);
+  PUT_U2(length, utf8_length)
+  for (u2 utf8_length_index = 0; utf8_length_index < utf8_length; utf8_length_index++) {
+    PUT_U1(bytes, utf8_value[utf8_length_index])
+  }
+}
+
+void addConstantMethodHandle(u1 reference_kind_value, u2 reference_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_METHOD_HANDLE_TAG)
+  PUT_U1(reference_kind, reference_kind_value)
+  PUT_U2(reference_index, reference_index_value)
+}
+
+void addConstantMethodType(u2 descriptor_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_METHOD_TYPE_TAG)
+  PUT_U2(descriptor_index, descriptor_index_value)
+}
+
+void addConstantDynamic(u2 bootstrap_method_attr_index_value, u2 name_and_type_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_DYNAMIC_TAG)
+  PUT_U2(bootstrap_method_attr_index, bootstrap_method_attr_index_value)
+  PUT_U2(name_and_type_index, name_and_type_index_value)
+}
+
+void addConstantInvokeDynamic(u2 bootstrap_method_attr_index_value, u2 name_and_type_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_INVOKE_DYNAMIC_TAG)
+  PUT_U2(bootstrap_method_attr_index, bootstrap_method_attr_index_value)
+  PUT_U2(name_and_type_index, name_and_type_index_value)
+}
+
+void addConstantModule(u2 name_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_MODULE_TAG)
+  PUT_U2(name_index, name_index_value)
+}
+
+void addConstantPackage(u2 name_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_PACKAGE_TAG)
+  PUT_U2(name_index, name_index_value)
 }
 
 void analyzer_constant_pool(FILE* pReadFile, pcp_info pcp) {
