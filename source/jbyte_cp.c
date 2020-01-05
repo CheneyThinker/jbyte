@@ -1,18 +1,18 @@
 #include "../include/jbyte_cp.h"
 
-void free_constant_pool(u1** constant_pool, u2 constant_pool_count) {
-  for (u2 constant_pool_count_index = 0; constant_pool_count_index < constant_pool_count; constant_pool_count_index++) {
-    free(constant_pool[constant_pool_count_index]);
+void free_constant_pool(cp_info cp) {
+  for (u2 constant_pool_count_index = 0; constant_pool_count_index < cp.constant_pool_count; constant_pool_count_index++) {
+    free(cp.constant_pool[constant_pool_count_index]);
   }
-  free(constant_pool);
+  free(cp.constant_pool);
 }
 
-u1** constant_pool(FILE* pReadFile, u2* count) {
+void constant_pool(FILE* pReadFile, pcp_info cp) {
   PRINTF_U2(constant_pool_count)
-  *count = constant_pool_count;
-  u1** constant_pool = (u1**) malloc(constant_pool_count * sizeof(u1*));
+  cp->constant_pool_count = constant_pool_count;
+  cp->constant_pool = (u1**) malloc(constant_pool_count * sizeof(u1*));
   for (u2 constant_pool_count_index = 0; constant_pool_count_index < constant_pool_count; constant_pool_count_index++) {
-    constant_pool[constant_pool_count_index] = NULL;
+    cp->constant_pool[constant_pool_count_index] = NULL;
   }
   for (u2 constant_pool_count_index = 1; constant_pool_count_index < constant_pool_count; constant_pool_count_index++) {
     PRINTF_U1(tag)
@@ -91,13 +91,13 @@ u1** constant_pool(FILE* pReadFile, u2* count) {
           PRINTF_U2(length)
           if (length > 0) {
             u1 utf8_bytes[length + 1];
-            constant_pool[constant_pool_count_index] = (u1*) malloc((length + 1) * sizeof(u1));
+            cp->constant_pool[constant_pool_count_index] = (u1*) malloc((length + 1) * sizeof(u1));
             for (u2 utf8_bytes_index = 0; utf8_bytes_index < length; utf8_bytes_index++) {
               fread(&utf8_bytes[utf8_bytes_index], 1, sizeof(u1), pReadFile);
-              constant_pool[constant_pool_count_index][utf8_bytes_index] = utf8_bytes[utf8_bytes_index];
+              cp->constant_pool[constant_pool_count_index][utf8_bytes_index] = utf8_bytes[utf8_bytes_index];
             }
             utf8_bytes[length] = '\0';
-            constant_pool[constant_pool_count_index][length] = '\0';
+            cp->constant_pool[constant_pool_count_index][length] = '\0';
             printf("utf8_bytes: %s\n", utf8_bytes);
           }
         }
@@ -128,7 +128,6 @@ u1** constant_pool(FILE* pReadFile, u2* count) {
         break;
     }
   }
-  return constant_pool;
 }
 
 void addConstantUtf8(u1* utf8_value, FILE* pWriteFile) {

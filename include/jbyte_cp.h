@@ -5,8 +5,8 @@
 
 #include "jbyte_attribute.h"
 
-void free_constant_pool(u1**, u2);
-u1** constant_pool(FILE*, u2*);
+void free_constant_pool(cp_info);
+void constant_pool(FILE*, pcp_info);
 void addConstantUtf8(u1*, FILE*);
 void addConstantClass(u2, FILE*);
 void addConstantString(u2, FILE*);

@@ -12,6 +12,11 @@ typedef unsigned char  u1;
 typedef unsigned short u2;
 typedef unsigned int   u4;
 
+typedef struct _cp_info {
+  u1** constant_pool;
+  u2   constant_pool_count;
+} cp_info, *pcp_info;
+
 #define BIG_ENDIAN
 #ifdef BIG_ENDIAN
   #define swap_u2(origin) ((origin << 8 & 0Xff00) | (origin >> 8 & 0X00ff))

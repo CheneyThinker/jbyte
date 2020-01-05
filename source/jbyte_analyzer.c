@@ -7,17 +7,17 @@ int jbyte_analyzer(int argc, char** argv)
     PRINTF_U4(magic)
     PRINTF_U2(minor_version)
     PRINTF_U2(major_version)
-    u2 constant_pool_count = 0x0000;
-    u1** cp = constant_pool(pReadFile, &constant_pool_count);
+    cp_info cp = { NULL, 0x0000 };
+    constant_pool(pReadFile, &cp);
     PRINTF_U2(access_flags)
     PRINTF_U2(this_class)
     PRINTF_U2(super_class)
     PRINTF_U2(interfaces_count)
     PRINTF_U2_ARRAY(interfaces_count, interfaces)
-    fields(pReadFile, cp);
-    methods(pReadFile, cp);
-    attributes(pReadFile, cp);
-    free_constant_pool(cp, constant_pool_count);
+    fields(pReadFile, cp.constant_pool);
+    methods(pReadFile, cp.constant_pool);
+    attributes(pReadFile, cp.constant_pool);
+    free_constant_pool(cp);
   }
   fclose(pReadFile);
   return 0;
