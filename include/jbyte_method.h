@@ -5,6 +5,7 @@
 
 #include "jbyte_field.h"
 
-void methods(FILE*, u1**);
+void generator_methods(FILE*);
+void analyzer_methods(FILE*, u1**);
 
 #endif

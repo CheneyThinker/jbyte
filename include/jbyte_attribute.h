@@ -6,7 +6,8 @@
 #include "jbyte_base.h"
 #include "jbyte_opcode.h"
 
-void attributes(FILE*, u1**);
+void generator_attributes(FILE*);
+void analyzer_attributes(FILE*, u1**);
 void ConstantValue_attribute(FILE*);
 void Code_attribute(FILE*, u1**);
 void StackMapTable_attribute(FILE*);

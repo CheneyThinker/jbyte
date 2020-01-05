@@ -1,5 +1,11 @@
 #include "../include/jbyte_attribute.h"
 
+void generator_attributes(FILE* pWriteFile) {
+  PUT_U2(attributes_count, 0x0001)
+  PUT_U2(attribute_name_index, 0x0011)
+  PUT_U4(attribute_length, 0x00000002)
+  PUT_U2(sourcefile_index, 0x0001)
+}
 /*
 attribute_info {
     u2 attribute_name_index;
@@ -7,7 +13,7 @@ attribute_info {
     u1 info[attribute_length];
 }
 */
-void attributes(FILE* pReadFile, u1** constant_pool) {
+void analyzer_attributes(FILE* pReadFile, u1** constant_pool) {
   PRINTF_U2(attributes_count)
   if (attributes_count > 0) {
     for (u2 attributes_count_index = 0; attributes_count_index < attributes_count; attributes_count_index++) {
@@ -1538,7 +1544,7 @@ void Code_attribute(FILE* pReadFile, u1** constant_pool) {
       PRINTF_U2(catch_type)
     }
   }
-  attributes(pReadFile, constant_pool);
+  analyzer_attributes(pReadFile, constant_pool);
 }
 
 /*

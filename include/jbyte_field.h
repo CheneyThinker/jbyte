@@ -5,6 +5,7 @@
 
 #include "jbyte_cp.h"
 
-void fields(FILE*, u1**);
+void generator_fields(FILE*);
+void analyzer_fields(FILE*, u1**);
 
 #endif

@@ -1,13 +1,75 @@
 #include "../include/jbyte_cp.h"
 
-void free_constant_pool(cp_info cp) {
-  for (u2 constant_pool_count_index = 0; constant_pool_count_index < cp.constant_pool_count; constant_pool_count_index++) {
-    free(cp.constant_pool[constant_pool_count_index]);
-  }
-  free(cp.constant_pool);
+void generator_constant_pool(FILE* pWriteFile) {
+  PUT_U2(constant_pool_count, 0x001d)
+  addConstantUtf8("Cheseny.java", pWriteFile);
+  addConstantUtf8("test/Cheseny", pWriteFile);
+  addConstantUtf8("java/lang/Object", pWriteFile);
+  addConstantUtf8("<init>", pWriteFile);
+  addConstantUtf8("()V", pWriteFile);
+  addConstantUtf8("main", pWriteFile);
+  addConstantUtf8("([Ljava/lang/String;)V", pWriteFile);
+  addConstantUtf8("java/lang/System", pWriteFile);
+  addConstantUtf8("out", pWriteFile);
+  addConstantUtf8("Ljava/io/PrintStream;", pWriteFile);
+  addConstantUtf8("java/io/PrintStream", pWriteFile);
+  addConstantUtf8("println", pWriteFile);
+  addConstantUtf8("(Ljava/lang/String;)V", pWriteFile);
+  addConstantUtf8("Welcome Cheseny, I love you WangYi!", pWriteFile);
+  addConstantUtf8("Code", pWriteFile);
+  addConstantUtf8("LineNumberTable", pWriteFile);
+  addConstantUtf8("SourceFile", pWriteFile);
+  addConstantClass(0x0002, pWriteFile);
+  addConstantClass(0x0003, pWriteFile);
+  addConstantClass(0x0008, pWriteFile);
+  addConstantClass(0x000b, pWriteFile);
+  addConstantString(0x000e, pWriteFile);
+  addConstantNameAndType(0x0004, 0x0005, pWriteFile);
+  addConstantNameAndType(0x0009, 0x000a, pWriteFile);
+  addConstantNameAndType(0x000c, 0x000d, pWriteFile);
+  addConstantFieldref(0x0014, 0x0018, pWriteFile);
+  addConstantMethodref(0x0013, 0x0017, pWriteFile);
+  addConstantMethodref(0x0015, 0x0019, pWriteFile);
 }
 
-void constant_pool(FILE* pReadFile, pcp_info cp) {
+void addConstantUtf8(u1* utf8_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_UTF8_TAG)
+  u2 utf8_length = (u2) strlen(utf8_value);
+  PUT_U2(length, utf8_length)
+  for (u2 utf8_length_index = 0; utf8_length_index < utf8_length; utf8_length_index++) {
+    PUT_U1(bytes, utf8_value[utf8_length_index])
+  }
+}
+
+void addConstantClass(u2 name_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_CLASS_TAG)
+  PUT_U2(name_index, name_index_value)
+}
+
+void addConstantString(u2 string_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_STRING_TAG)
+  PUT_U2(string_index, string_index_value)
+}
+
+void addConstantNameAndType(u2 name_index_value, u2 descriptor_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_NAME_AND_TYPE_TAG)
+  PUT_U2(name_index, name_index_value)
+  PUT_U2(descriptor_index, descriptor_index_value)
+}
+
+void addConstantFieldref(u2 class_index_value, u2 name_and_type_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_FIELDREF_TAG)
+  PUT_U2(class_index, class_index_value)
+  PUT_U2(name_and_type_index, name_and_type_index_value)
+}
+
+void addConstantMethodref(u2 class_index_value, u2 name_and_type_index_value, FILE* pWriteFile) {
+  PUT_U1(tag, CONSTANT_METHODREF_TAG)
+  PUT_U2(class_index, class_index_value)
+  PUT_U2(name_and_type_index, name_and_type_index_value)
+}
+
+void analyzer_constant_pool(FILE* pReadFile, pcp_info cp) {
   PRINTF_U2(constant_pool_count)
   cp->constant_pool_count = constant_pool_count;
   cp->constant_pool = (u1**) malloc(constant_pool_count * sizeof(u1*));
@@ -130,40 +192,10 @@ void constant_pool(FILE* pReadFile, pcp_info cp) {
   }
 }
 
-void addConstantUtf8(u1* utf8_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_UTF8_TAG)
-  u2 utf8_length = (u2) strlen(utf8_value);
-  PUT_U2(length, utf8_length)
-  for (u2 utf8_length_index = 0; utf8_length_index < utf8_length; utf8_length_index++) {
-    PUT_U1(bytes, utf8_value[utf8_length_index])
+void free_constant_pool(cp_info cp) {
+  for (u2 constant_pool_count_index = 0; constant_pool_count_index < cp.constant_pool_count; constant_pool_count_index++) {
+    free(cp.constant_pool[constant_pool_count_index]);
   }
-}
-
-void addConstantClass(u2 name_index_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_CLASS_TAG)
-  PUT_U2(name_index, name_index_value)
-}
-
-void addConstantString(u2 string_index_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_STRING_TAG)
-  PUT_U2(string_index, string_index_value)
-}
-
-void addConstantNameAndType(u2 name_index_value, u2 descriptor_index_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_NAME_AND_TYPE_TAG)
-  PUT_U2(name_index, name_index_value)
-  PUT_U2(descriptor_index, descriptor_index_value)
-}
-
-void addConstantFieldref(u2 class_index_value, u2 name_and_type_index_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_FIELDREF_TAG)
-  PUT_U2(class_index, class_index_value)
-  PUT_U2(name_and_type_index, name_and_type_index_value)
-}
-
-void addConstantMethodref(u2 class_index_value, u2 name_and_type_index_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_METHODREF_TAG)
-  PUT_U2(class_index, class_index_value)
-  PUT_U2(name_and_type_index, name_and_type_index_value)
+  free(cp.constant_pool);
 }
 
