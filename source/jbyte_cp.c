@@ -260,6 +260,9 @@ void free_constant_pool(pcp_info pcp) {
       pcp->constant_pool[constant_pool_count_index] = NULL;
     }
   }
-  free(pcp->constant_pool);
+  if (pcp->constant_pool) {
+    free(pcp->constant_pool);
+    pcp->constant_pool = NULL;
+  }
 }
 
