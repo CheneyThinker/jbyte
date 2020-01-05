@@ -3,7 +3,8 @@
 #ifndef JBYTE_ATTRIBUTE_H
 #define JBYTE_ATTRIBUTE_H
 
-#include "jbyte_method.h"
+#include "jbyte_base.h"
+#include "jbyte_opcode.h"
 
 void attributes(FILE*, u1**);
 void ConstantValue_attribute(FILE*);

@@ -3,9 +3,10 @@
 #ifndef JBYTE_CP_H
 #define JBYTE_CP_H
 
-#include "jbyte_base.h"
-#include "jbyte_opcode.h"
+#include "jbyte_attribute.h"
 
+void free_constant_pool(u1**, u2);
+u1** constant_pool(FILE*, u2*);
 void addConstantUtf8(u1*, FILE*);
 void addConstantClass(u2, FILE*);
 void addConstantString(u2, FILE*);

@@ -5,4 +5,6 @@
 
 #include "jbyte_field.h"
 
+void methods(FILE*, u1**);
+
 #endif

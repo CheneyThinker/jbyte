@@ -3,9 +3,11 @@
 int jbyte_generator(int argc, char** argv) {
   FILE* pWriteFile = fopen(argv[2], "w+b");
   if (pWriteFile != NULL) {
+
     PUT_U4(magic, MAGIC)
     PUT_U2(minor_version, 0x0000)
     PUT_U2(major_version, JDK13)
+
     PUT_U2(constant_pool_count, 0x001d)
     addConstantUtf8("Cheseny.java", pWriteFile);
     addConstantUtf8("test/Cheseny", pWriteFile);

@@ -5,4 +5,6 @@
 
 #include "jbyte_cp.h"
 
+void fields(FILE*, u1**);
+
 #endif
