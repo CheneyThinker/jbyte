@@ -69,12 +69,12 @@ void addConstantMethodref(u2 class_index_value, u2 name_and_type_index_value, FI
   PUT_U2(name_and_type_index, name_and_type_index_value)
 }
 
-void analyzer_constant_pool(FILE* pReadFile, pcp_info cp) {
+void analyzer_constant_pool(FILE* pReadFile, pcp_info pcp) {
   PRINTF_U2(constant_pool_count)
-  cp->constant_pool_count = constant_pool_count;
-  cp->constant_pool = (u1**) malloc(constant_pool_count * sizeof(u1*));
+  pcp->constant_pool_count = constant_pool_count;
+  pcp->constant_pool = (u1**) malloc(constant_pool_count * sizeof(u1*));
   for (u2 constant_pool_count_index = 0; constant_pool_count_index < constant_pool_count; constant_pool_count_index++) {
-    cp->constant_pool[constant_pool_count_index] = NULL;
+    pcp->constant_pool[constant_pool_count_index] = NULL;
   }
   for (u2 constant_pool_count_index = 1; constant_pool_count_index < constant_pool_count; constant_pool_count_index++) {
     PRINTF_U1(tag)
@@ -153,13 +153,13 @@ void analyzer_constant_pool(FILE* pReadFile, pcp_info cp) {
           PRINTF_U2(length)
           if (length > 0) {
             u1 utf8_bytes[length + 1];
-            cp->constant_pool[constant_pool_count_index] = (u1*) malloc((length + 1) * sizeof(u1));
+            pcp->constant_pool[constant_pool_count_index] = (u1*) malloc((length + 1) * sizeof(u1));
             for (u2 utf8_bytes_index = 0; utf8_bytes_index < length; utf8_bytes_index++) {
               fread(&utf8_bytes[utf8_bytes_index], 1, sizeof(u1), pReadFile);
-              cp->constant_pool[constant_pool_count_index][utf8_bytes_index] = utf8_bytes[utf8_bytes_index];
+              pcp->constant_pool[constant_pool_count_index][utf8_bytes_index] = utf8_bytes[utf8_bytes_index];
             }
             utf8_bytes[length] = '\0';
-            cp->constant_pool[constant_pool_count_index][length] = '\0';
+            pcp->constant_pool[constant_pool_count_index][length] = '\0';
             printf("utf8_bytes: %s\n", utf8_bytes);
           }
         }
@@ -192,10 +192,13 @@ void analyzer_constant_pool(FILE* pReadFile, pcp_info cp) {
   }
 }
 
-void free_constant_pool(cp_info cp) {
-  for (u2 constant_pool_count_index = 0; constant_pool_count_index < cp.constant_pool_count; constant_pool_count_index++) {
-    free(cp.constant_pool[constant_pool_count_index]);
+void free_constant_pool(pcp_info pcp) {
+  for (u2 constant_pool_count_index = 0; constant_pool_count_index < pcp->constant_pool_count; constant_pool_count_index++) {
+    if (pcp->constant_pool[constant_pool_count_index]) {
+      free(pcp->constant_pool[constant_pool_count_index]);
+      pcp->constant_pool[constant_pool_count_index] = NULL;
+    }
   }
-  free(cp.constant_pool);
+  free(pcp->constant_pool);
 }
 

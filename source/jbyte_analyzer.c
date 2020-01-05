@@ -16,7 +16,7 @@ int jbyte_analyzer(int argc, char** argv) {
     analyzer_fields(pReadFile, cp.constant_pool);
     analyzer_methods(pReadFile, cp.constant_pool);
     analyzer_attributes(pReadFile, cp.constant_pool);
-    free_constant_pool(cp);
+    free_constant_pool(&cp);
   }
   fclose(pReadFile);
   return 0;

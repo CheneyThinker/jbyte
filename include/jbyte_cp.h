@@ -13,6 +13,6 @@ void addConstantNameAndType(u2, u2, FILE*);
 void addConstantFieldref(u2, u2, FILE*);
 void addConstantMethodref(u2, u2, FILE*);
 void analyzer_constant_pool(FILE*, pcp_info);
-void free_constant_pool(cp_info);
+void free_constant_pool(pcp_info);
 
 #endif
