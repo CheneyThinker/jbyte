@@ -50,7 +50,7 @@ void addConstantMethodref(u2 class_index_value, u2 name_and_type_index_value, FI
 }
 
 void addConstantInterfaceMethodref(u2 class_index_value, u2 name_and_type_index_value, FILE* pWriteFile) {
-  PUT_U1(tag, CONSTANT_METHODREF_TAG)
+  PUT_U1(tag, CONSTANT_INTERFACE_METHODREF_TAG)
   PUT_U2(class_index, class_index_value)
   PUT_U2(name_and_type_index, name_and_type_index_value)
 }
