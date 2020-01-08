@@ -17,8 +17,8 @@ typedef struct _cp_info {
   u2   constant_pool_count;
 } cp_info, *pcp_info;
 
-#define BIG_ENDIAN
-#ifdef BIG_ENDIAN
+#define LITTLE_ENDIAN
+#ifdef LITTLE_ENDIAN
   #define swap_u2(origin) ((origin << 8 & 0Xff00) | (origin >> 8 & 0X00ff))
   #define swap_u4(origin) ((origin << 24 & 0Xff000000) | (origin <<  8 & 0X00ff0000) | (origin >> 24 & 0X000000ff) | (origin >>  8 & 0X0000ff00))
 #else
