@@ -10,7 +10,7 @@ jbyte:	$(objects)
 	gcc -o $@ $(objects) -lm
 	rm -rf *.o
 
-%.o:	source/%.c
+%.o:	src/%.c
 	gcc -c -o $@ $<
 
 .PHONY:	clean
